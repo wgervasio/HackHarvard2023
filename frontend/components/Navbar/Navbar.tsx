@@ -10,6 +10,7 @@ import ScannerScreen from '../../Pages/ScannerScreen';
 const Tab = createBottomTabNavigator();
 
 export default function Navbar() {
+<<<<<<< HEAD
     return(
         <NavigationContainer>
             <Tab.Navigator initialRouteName={"Scanner"}
@@ -17,6 +18,52 @@ export default function Navbar() {
                 tabBarIcon: ({focused, color, size}) => {
                     let icon;
                     let routeName = route.name;
+=======
+	return (
+		<NavigationContainer>
+		  <Tab.Navigator
+			initialRouteName={'Scanner'}
+			screenOptions={({ route }) => ({
+			  tabBarIcon: ({ focused, color, size }) => {
+				let icon;
+				let routeName = route.name;
+	  
+				if (routeName === 'Scanner') {
+				  icon = focused ? 'camera' : 'camera-outline';
+				} else if (routeName === 'Map') {
+				  icon = focused ? 'location' : 'location-outline';
+				} else if (routeName === 'Profile') {
+				  icon = focused ? 'person' : 'person-outline';
+				}
+	  
+				return (
+				  <View
+					style={{
+					  width: 60,
+					  height: 60,
+					  borderRadius: 30,
+					  backgroundColor: focused ? '#BBD9B4' : 'transparent',
+					  justifyContent: 'center',
+					  alignItems: 'center',
+					  borderWidth: 5,
+    				  borderColor: focused? 'white': 'transparent',
+					}}
+				  >
+					<Ionicons name={icon!} size={size} color={focused ? 'white' : '#BBD9B4'} />
+				  </View>
+				);
+			  },
+			  tabBarLabel: '',
+			})}
+		  >
+			<Tab.Screen name={'Map'} component={MapScreen} />
+			<Tab.Screen name={'Scanner'} component={ScannerScreen} />
+			<Tab.Screen name={'Profile'} component={ProfileScreen} />
+		  </Tab.Navigator>
+		</NavigationContainer>
+	  );
+}
+>>>>>>> 9a72ce19e959fc75875d7679e8f205b94804d856
 
                     if (routeName === "Scanner") {
                         icon = focused ? "camera" : "camera-outline"
