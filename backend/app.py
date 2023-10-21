@@ -70,14 +70,15 @@ def predict_yolo():
         boxes = predictions[:, :4].flatten().tolist() # x1, y1, x2, y2
         scores = predictions[:, 4].flatten().tolist()
         categories = predictions[:, 5].flatten().tolist()
-
-
-        
-
-        res= jsonify({'boxes':[float(b) for b in boxes],
-                        'confidence':[float(s) for s in scores],
-                        'class': CLASSES_YOLO[int(categories[0])]})
-    
+        confidence = float(scores[0])
+        if confidence < 0.6:
+            return jsonify({})
+        else:
+            res= jsonify({
+                'boxes':[float(b) for b in boxes],
+                'confidence':confidence,
+                'class': CLASSES_YOLO[int(categories[0])]
+            })
     else:
         res= jsonify({'error': 'Something went wrong'}), 400
     end_time = time.time()
