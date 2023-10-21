@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 
@@ -12,7 +12,7 @@ export default function App() {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
       const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === "granted");
+      setHasCameraPermission(cameraPermission.status === 'granted');
     })();
   }, []);
 
@@ -24,7 +24,13 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Camera style={styles.camera} ref={cameraRef} type={Camera.Constants.Type.back} />
+      <View style={styles.cameraContainer}>
+        <Camera style={styles.camera} ref={cameraRef} type={Camera.Constants.Type.back} />
+        <View style={styles.topLeft} />
+        <View style={styles.topRight} />
+        <View style={styles.bottomLeft} />
+        <View style={styles.bottomRight} />
+      </View>
     </SafeAreaView>
   );
 }
@@ -35,8 +41,53 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  cameraContainer: {
+    flex: 1,
+    width: '100%',
+    position: 'relative',
+  },
   camera: {
     flex: 1,
     width: '100%',
+  },
+  topLeft: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    width: 40,
+    height: 40,
+    borderColor: 'white',
+  },
+  topRight: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    width: 40,
+    height: 40,
+    borderColor: 'white',
+  },
+  bottomLeft: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    width: 40,
+    height: 40,
+    borderColor: 'white',
+  },
+  bottomRight: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    width: 40,
+    height: 40,
+    borderColor: 'white',
   },
 });
