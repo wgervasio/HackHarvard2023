@@ -1,4 +1,5 @@
 import * as React from 'react';
+<<<<<<< HEAD
 
 
 import { StatusBar } from 'expo-status-bar';
@@ -366,3 +367,16 @@ const styles = StyleSheet.create({
     }, 
     
   });
+=======
+import { View, Text } from 'react-native';
+
+export default function ProfileScreen({ navigation }: any) {
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text
+                onPress={() => navigation.navigate('Home')}
+                style={{ fontSize: 26, fontWeight: 'bold' }}>Profile Screen</Text>
+        </View>
+    );
+}
+>>>>>>> fafee5974f15057d14c0a25783aa207381f59cf8
