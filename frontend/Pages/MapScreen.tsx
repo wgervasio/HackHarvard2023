@@ -6,7 +6,8 @@ import axios, { AxiosResponse } from 'axios';
 import {REACT_APP_GOOGLE_PLACES_API_KEY} from '@env';
 
 const GOOGLE_PLACES_API_KEY = REACT_APP_GOOGLE_PLACES_API_KEY;
-console.log(GOOGLE_PLACES_API_KEY)
+
+
 interface Coordinates {
   latitude: number;
   longitude: number;
@@ -51,10 +52,8 @@ export default class RecyclingCentersMap extends Component {
       const response: AxiosResponse = await axios.get(apiUrl);
 
       if (response.data && response.data.results) {
-        console.log('API Response:', response.data);
         const recyclingCenters: PlaceResult[] = response.data.results;
         this.setState({ recyclingCenters });
-        console.log(recyclingCenters)
       } else {
         console.error('Invalid API response');
       }
