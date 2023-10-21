@@ -37,6 +37,8 @@ export default function Navbar() {
 					  backgroundColor: focused ? '#BBD9B4' : 'transparent',
 					  justifyContent: 'center',
 					  alignItems: 'center',
+					  borderWidth: 5,
+    				  borderColor: focused? 'white': 'transparent',
 					}}
 				  >
 					<Ionicons name={icon!} size={size} color={focused ? 'white' : '#BBD9B4'} />
