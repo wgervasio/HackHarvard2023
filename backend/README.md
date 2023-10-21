@@ -3,7 +3,7 @@
 To initialize follow:
 - `python -m venv venv`
 - `.\venv\Scripts\activate` on Windows or `source ./venv/Scripts/activate` on *nix
-- `pip install requirements.txt`
+- `pip install -r requirements.txt`
 - `python app.py`
 
 
