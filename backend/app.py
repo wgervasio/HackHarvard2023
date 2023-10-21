@@ -4,8 +4,16 @@ import numpy as np
 from PIL import Image
 import torchvision.transforms as transforms
 import io
+import logging
+import time  # Import the time module to calculate prediction time
 
 app = Flask(__name__)
+
+# Set up logging to file
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='app.log',  # Name of the log file
+                    filemode='a')  # Append mode so log file isn't overwritten at each run
 
 ONNX_PATH = 'garbage_classification_model.onnx'
 CLASSES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
@@ -24,12 +32,20 @@ def predict_onnx(image):
     ort_inputs = {ort_session.get_inputs()[0].name: image}
     ort_outs = ort_session.run(None, ort_inputs)
     predictions = ort_outs[0]
-    predicted_class = np.argmax(predictions, axis=1)
+    predicted_class_index = np.argmax(predictions, axis=1)  # This gives the index of the class with highest probability
+    predicted_class = CLASSES[predicted_class_index[0]]  # Get the class name using the index
 
-    return CLASSES[predicted_class[0]]
+    # Now, get the confidence score of the predicted class
+    confidence_score = predictions[0, predicted_class_index[0]]
+
+    return predicted_class, float(confidence_score)
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    # Log the start time of prediction
+    start_time = time.time()
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
 
@@ -40,9 +56,21 @@ def predict():
     if file:
         # Read the file from the request and prepare it for prediction
         image = Image.open(io.BytesIO(file.read())).convert('RGB')  # Convert image to RGB (3 channels)
-        prediction = predict_onnx(image)
+        prediction, prediction_conf = predict_onnx(image)
 
-        return jsonify({'class': prediction})
+        # Log the end time of prediction and calculate the duration
+        end_time = time.time()
+        duration = end_time - start_time
+        logging.info(f"Prediction successful. Duration: {duration:.2f} seconds")  # Log the duration
+
+        return jsonify({'class': prediction,
+                        'confidence': prediction_conf
+                        })
+
+    # In case of failure, log the error and the time taken
+    end_time = time.time()
+    duration = end_time - start_time
+    logging.error(f"Prediction failed. Duration: {duration:.2f} seconds")  # Log the duration
 
     return jsonify({'error': 'Something went wrong'}), 400
 
