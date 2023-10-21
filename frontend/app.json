@@ -1,16 +1,6 @@
 {
   "expo": {
     "name": "frontend",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "android": {
-      "permissions": [
-        "CAMERA",
-        "RECORD_AUDIO"
-    ]
-  },
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,6 +16,12 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
