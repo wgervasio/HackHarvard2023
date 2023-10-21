@@ -1,31 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function App() {
-  let cameraRef = useRef();
-  const [hasCameraPermission, setHasCameraPermission] = useState(false);
-  const [photo, setPhoto] = useState();
+  const cameraRef = useRef<Camera | null>(null);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
       setHasCameraPermission(cameraPermission.status === 'granted');
     })();
   }, []);
 
-  if (hasCameraPermission === undefined) {
+  useFocusEffect(
+    React.useCallback(() => {
+      if (cameraRef.current) {
+        cameraRef.current.resumePreview();
+      }
+    }, [])
+  );
+
+  if (hasCameraPermission === null) {
     return <Text>Requesting permissions...</Text>;
   } else if (!hasCameraPermission) {
-    return <Text>Permission for camera not granted. Please change this in settings.</Text>;
+    return <Text>Permission for the camera not granted. Please change this in settings.</Text>;
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cameraContainer}>
-        <Camera style={styles.camera} ref={cameraRef} type={Camera.Constants.Type.back} />
+        <Camera style={styles.camera} ref={(ref) => (cameraRef.current = ref)} />
         <View style={styles.topLeft} />
         <View style={styles.topRight} />
         <View style={styles.bottomLeft} />
