@@ -43,8 +43,10 @@ const styles = StyleSheet.create({
 		height: 280,
 	},
 	text: {
-		fontSize: 20,
-		color: "black",
+		fontSize: 50,
+		color: "#F7F7E1",
+		fontFamily: "Montserrat",
+		fontWeight: "bold",
 	},
 });
 
