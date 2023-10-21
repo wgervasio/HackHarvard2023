@@ -18,11 +18,11 @@ const SplashScreen = () => {
 				style={[styles.fadeContainer, { opacity: fadeAnim }]}
 			>
 				<Image
-					source={require("./logo")}
+					source={require("../../assets/app_logo.png")}
 					style={styles.image}
 					resizeMode="contain"
 				/>
-				<Text style={styles.text}>Your Splash Screen Text</Text>
+				<Text style={styles.text}>App Name</Text>
 			</Animated.View>
 		</View>
 	);
@@ -39,13 +39,12 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	image: {
-		width: 280, // Adjust the width as per your requirement
-		height: 280, // Adjust the height as per your requirement
-		top: 50,
+		width: 280,
+		height: 280,
 	},
 	text: {
 		fontSize: 20,
-		color: "black", // Customize the text color here
+		color: "black",
 	},
 });
 
