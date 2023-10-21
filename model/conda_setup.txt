@@ -1,6 +1,0 @@
-conda create --name hackharvard2023
-
-conda activate hackharvard2023
-
-
- 
