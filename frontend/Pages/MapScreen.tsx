@@ -5,9 +5,6 @@ import MapView, { Marker } from 'react-native-maps';
 import axios, { AxiosResponse } from 'axios';
 import {REACT_APP_GOOGLE_PLACES_API_KEY} from '@env';
 
-const GOOGLE_PLACES_API_KEY = REACT_APP_GOOGLE_PLACES_API_KEY;
-
-
 interface Coordinates {
   latitude: number;
   longitude: number;
@@ -47,7 +44,7 @@ export default class RecyclingCentersMap extends Component {
         `location=${userCoordinates.latitude},${userCoordinates.longitude}` +
         `&radius=10000` +
         `&keyword=recycling center` +
-        `&key=${GOOGLE_PLACES_API_KEY}`;
+        `&key=${REACT_APP_GOOGLE_PLACES_API_KEY}`;
 
       const response: AxiosResponse = await axios.get(apiUrl);
 
