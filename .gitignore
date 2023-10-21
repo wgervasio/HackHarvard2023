@@ -5,3 +5,4 @@ __pycache__
 scratch.ipynb
 *.log
 .env
+scratch_rcnn_data
