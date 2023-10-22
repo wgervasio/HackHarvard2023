@@ -19,45 +19,65 @@ import {
 
 const data = [
     {
-      name: "Seoul",
+      name: "Biodegradable",
       population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
+      color: "#32cd32",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 12
     },
     {
-      name: "Toronto",
+      name: "Cardboard",
       population: 2800000,
-      color: "#F00",
+      color: "#fff8dc",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 12
     },
     {
-      name: "Beijing",
+      name: "Glass",
       population: 527612,
-      color: "red",
+      color: "#000080",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 12
     },
     {
-      name: "New York",
+      name: "Mental",
       population: 8538000,
-      color: "#005555",
+      color: "#d8bfd8",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 12
     },
     {
-      name: "Moscow",
+      name: "Paper",
       population: 11920000,
-      color: "rgb(0, 0, 255)",
+      color: "#f5fffa",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 12
+    },
+
+    {
+      name: "Plastic",
+      population: 1190000,
+      color: "#f4a460",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 12
     }
   ];
   
   
   const LineChartYear = () => {
+    const stylesTextBelow = StyleSheet.create({
+      container: {
+        flex: 1,
+      },
+      textBelowChart: {
+        position: 'absolute',
+        top: (Dimensions.get("window").height)*0.38,
+        fontSize: 17,
+        color: '#ffff', // Adjust the margin as needed
+      },
+    });
     return (
+      <View style={stylesTextBelow.container}>
       <LineChart
       data={{
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Agu", "Sep", "Oct", "Nov", "Dec"],
@@ -82,8 +102,7 @@ const data = [
       }}
       width={(Dimensions.get("window").width)*0.95} // from react-native
       height={(Dimensions.get("window").height)*0.4}
-      yAxisLabel="$"
-      yAxisSuffix="k"
+
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
@@ -102,6 +121,7 @@ const data = [
         }
       }}
       verticalLabelRotation={5}
+      
       bezier
       style={{
         marginTop: 20,
@@ -110,13 +130,28 @@ const data = [
         left: (Dimensions.get("window").width)*0.025,
   
       }}
+
     />
+    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Year</Text>
+    </View>
     )
   }
   
   
   const LineChartWeek = () => {
+    const stylesTextBelow = StyleSheet.create({
+      container: {
+        flex: 1,
+      },
+      textBelowChart: {
+        position: 'absolute',
+        top: (Dimensions.get("window").height)*0.38,
+        fontSize: 17,
+        color: '#ffff', // Adjust the margin as needed
+      },
+    });
     return (
+      <View style={stylesTextBelow.container}>
     <LineChart
       data={{
         labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
@@ -165,11 +200,26 @@ const data = [
   
       }}
     />
+
+    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Week</Text>
+    </View>
     )
   }
   
   const LineChartMonth = () => {
+    const stylesTextBelow = StyleSheet.create({
+      container: {
+        flex: 1,
+      },
+      textBelowChart: {
+        position: 'absolute',
+        top: (Dimensions.get("window").height)*0.38,
+        fontSize: 17,
+        color: '#ffff', // Adjust the margin as needed
+      },
+    });
     return (
+      <View style={stylesTextBelow.container}>
       <LineChart
       data={{
         labels: ["1 - 7", "8 - 14", "15 - 21", "21 - end"],
@@ -186,8 +236,6 @@ const data = [
       }}
       width={(Dimensions.get("window").width)*0.95} // from react-native
       height={(Dimensions.get("window").height)*0.4}
-      yAxisLabel="$"
-      yAxisSuffix="k"
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
@@ -214,9 +262,13 @@ const data = [
         left: (Dimensions.get("window").width)*0.025,
   
       }}
+      
     />
-    )
-  }
+
+    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Month</Text>
+    </View>
+    );
+  };
   
   const user = {
     name: 'John Doe',
@@ -251,12 +303,42 @@ const data = [
   
   };
   const LogOut = () => {
+    const styles = StyleSheet.create({
+      container: {
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        width: (Dimensions.get("window").width)*0.96,
+        left: (Dimensions.get("window").width)*0.02
+      },
+      button: {
+        backgroundColor: '#8fbc8f',
+        top: 30,
+        marginBottom: 60,
+        padding: 15,
+        borderRadius: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.2)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 2,
+        shadowOpacity: 1,
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 13,
+        fontWeight: 'bold',
+      },
+    });
     return (
-      <View style={styleProfile.container}>
-        <Text style={styleProfile.userEmail}>Log Out </Text>
-      </View>
-    );
-  
+      <SafeAreaView style = {styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {}}
+      >
+        <Text style={styles.buttonText}>User Log Out</Text>
+      </TouchableOpacity>
+        
+        
+        </SafeAreaView>
+    )
   };
   
   
