@@ -18,7 +18,7 @@ const SplashScreen = () => {
 				style={[styles.fadeContainer, { opacity: fadeAnim }]}
 			>
 				<Image
-					source={require("../../assets/app_logo.svg")}
+					source={require("../../frontend/assets/app_icon.png")}
 					style={styles.image}
 					resizeMode="contain"
 				/>
