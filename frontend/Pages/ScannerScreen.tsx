@@ -6,7 +6,7 @@ import fetch from 'node-fetch'; // Import the 'node-fetch' library for making HT
 
 
 // const SERVERURL = 'http://192.168.0.100:5000'
-const SERVERURL = 'http://10.253.17.124:5000'
+const SERVERURL = 'https://hackharvardflask.onrender.com:5000'
 
 export default function App() {
   const cameraRef = useRef<Camera | null>(null);
