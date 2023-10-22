@@ -87,8 +87,8 @@ const data = [
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
-        backgroundGradientFrom: "#fb8c00",
-        backgroundGradientTo: "#ffa726",
+        backgroundGradientFrom: "#a9a9a9",
+        backgroundGradientTo: "#556b2f",
         decimalPlaces: 2, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -101,6 +101,7 @@ const data = [
           stroke: "#ffa726"
         }
       }}
+      verticalLabelRotation={5}
       bezier
       style={{
         marginTop: 20,
@@ -140,8 +141,8 @@ const data = [
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
-        backgroundGradientFrom: "#fb8c00",
-        backgroundGradientTo: "#ffa726",
+        backgroundGradientFrom: "#a9a9a9",
+        backgroundGradientTo: "#556b2f",
         decimalPlaces: 2, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -155,6 +156,7 @@ const data = [
         }
       }}
       bezier
+      verticalLabelRotation={5}
       style={{
         marginTop: 20,
         marginBottom: 20,
@@ -189,8 +191,8 @@ const data = [
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
-        backgroundGradientFrom: "#fb8c00",
-        backgroundGradientTo: "#ffa726",
+        backgroundGradientFrom: "#a9a9a9",
+        backgroundGradientTo: "#556b2f",
         decimalPlaces: 2, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -204,6 +206,7 @@ const data = [
         }
       }}
       bezier
+      verticalLabelRotation={5}
       style={{
         marginTop: 20,
         marginBottom: 20,
@@ -274,7 +277,7 @@ export default function ProfileScreen({ navigation }: any) {
         left: (Dimensions.get("window").width)*0.02
       },
       button: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#3cb371',
         padding: 15,
         borderRadius: 10,
         shadowColor: 'rgba(0, 0, 0, 0.2)',
@@ -342,7 +345,7 @@ export default function ProfileScreen({ navigation }: any) {
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   }}
   accessor={"population"}
-  backgroundColor={ '#f8f'}
+  backgroundColor={ '#bbd9b4'}
   paddingLeft="15"
   
   center={[10, 10]}
