@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Animated } from "react-native";
+import { View, Text, Image, StyleSheet, Animated, Easing } from "react-native";
 import * as Font from "expo-font";
+import { GoogleButton } from "../components/GoogleButton";
 
-const SplashScreen = () => {
+const SplashScreen = ({ loginWithGoogle }) => {
 	const [fadeAnim] = useState(new Animated.Value(0));
+	const [positionAnim] = useState(new Animated.Value(0));
+	const [buttonFadeAnim] = useState(new Animated.Value(0));
 	const [isFontLoaded, setIsFontLoaded] = useState(false);
 
 	useEffect(() => {
@@ -15,11 +18,28 @@ const SplashScreen = () => {
 		};
 		loadFont();
 
-		Animated.timing(fadeAnim, {
-			toValue: 1,
-			duration: 2000,
+		const positionAnimation = Animated.timing(positionAnim, {
+			toValue: -50,
+			duration: 500,
 			useNativeDriver: true,
-		}).start();
+			easing: Easing.linear,
+		});
+
+		const fadeUpAnimation = Animated.timing(fadeAnim, {
+			toValue: 1,
+			duration: 1500,
+			useNativeDriver: true,
+			easing: Easing.linear,
+		});
+
+		Animated.sequence([fadeUpAnimation, positionAnimation]).start(() => {
+			Animated.timing(buttonFadeAnim, {
+				toValue: 1,
+				duration: 1000,
+				useNativeDriver: true,
+				easing: Easing.linear,
+			}).start();
+		});
 	}, []);
 
 	if (!isFontLoaded) {
@@ -29,7 +49,13 @@ const SplashScreen = () => {
 	return (
 		<View style={styles.container}>
 			<Animated.View
-				style={[styles.fadeContainer, { opacity: fadeAnim }]}
+				style={[
+					styles.fadeContainer,
+					{
+						opacity: fadeAnim,
+						transform: [{ translateY: positionAnim }],
+					},
+				]}
 			>
 				<Image
 					source={require("../../frontend/assets/app_icon.png")}
@@ -37,6 +63,12 @@ const SplashScreen = () => {
 					resizeMode="contain"
 				/>
 				<Text style={styles.text}>QuickSort</Text>
+			</Animated.View>
+			<Animated.View style={{ opacity: buttonFadeAnim }}>
+				<GoogleButton
+					text="Login with Google"
+					onPress={loginWithGoogle}
+				/>
 			</Animated.View>
 		</View>
 	);
@@ -61,6 +93,13 @@ const styles = StyleSheet.create({
 		color: "#F7F7E1",
 		fontFamily: "Montserrat",
 		fontWeight: "bold",
+	},
+	button: {
+		marginTop: 20,
+		padding: 10,
+		backgroundColor: "#4CAF50",
+		color: "white",
+		fontSize: 20,
 	},
 });
 
