@@ -6,17 +6,29 @@ import Navbar from "./components/Navbar/Navbar";
 
 export default function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	const loginWithGoogle = () => {
+		setIsLoggedIn(true);
+	};
 
 	useEffect(() => {
-		// Simulate a loading process
 		setTimeout(() => {
 			setIsLoaded(true);
-		}, 2000); // Adjust the duration as per your requirement
+		}, 2000);
 	}, []);
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#BBD9B4" }}>
-			{isLoaded ? <Navbar /> : <SplashScreen />}
+			{isLoaded ? (
+				isLoggedIn ? (
+					<Navbar />
+				) : (
+					<SplashScreen loginWithGoogle={loginWithGoogle} />
+				)
+			) : (
+				<SplashScreen />
+			)}
 			<StatusBar style="auto" />
 		</View>
 	);

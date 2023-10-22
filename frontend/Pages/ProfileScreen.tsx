@@ -244,7 +244,7 @@ const data = [
   const ProfileNavigation = () => {
     return (
       <View style={styleProfile.container}>
-        <Text style={styleProfile.userName}>{user.name}</Text>
+        <Text style={styleProfile.userName}>{"Welcome, " + user.name}</Text>
         <Text style={styleProfile.userEmail}>{user.email}</Text>
       </View>
     );
