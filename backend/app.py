@@ -1,12 +1,21 @@
 from flask import Flask, request, jsonify
 import os
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 def create_connection():
+    connection = ""
     try:
-        connection = psycopg2.connect(os.environ.get('POSTGRES_URL'))
+        connection = psycopg2.connect(
+            host = os.environ.get('CLOUD_SQL_HOST_NAME'),
+            dbname = os.environ.get('CLOUD_SQL_DATABASE_NAME'),
+            user = os.environ.get('CLOUD_SQL_USERNAME'),
+            password = os.environ.get('CLOUD_SQL_PASSWORD')
+        )
         return connection
     except psycopg2.Error as error:
         return error
