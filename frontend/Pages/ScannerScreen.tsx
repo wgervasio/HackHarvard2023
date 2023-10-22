@@ -9,6 +9,8 @@ export default function App() {
   const cameraRef = useRef<Camera | null>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
+  const [prediction, setPrediction] = useState<{ label: string; score: number } | null>(null);
+
 
   useEffect(() => {
     (async () => {
@@ -33,15 +35,16 @@ export default function App() {
   const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classification";
   const BEARER_TOKEN = "Token"; // Replace with your actual Hugging Face Bearer token
   
-  function getTopPrediction(predictions:any) {
-    // Sort the predictions from highest to lowest based on the score.
-    predictions.sort((a:any, b:any) => b.score - a.score);
+  function getTopPrediction(predictions: any) {
+    predictions.sort((a: any, b: any) => b.score - a.score);
   
-    // Check if the top score meets the minimum threshold.
     if (predictions[0].score > 0.60) {
-      return predictions[0].label;
+      return {
+        label: predictions[0].label,
+        score: predictions[0].score,
+      };
     } else {
-      return 'n/a';
+      return { label: 'n/a', score: 0 }; // or return null, based on your preference
     }
   }
 
@@ -65,13 +68,9 @@ export default function App() {
       if (response.ok) {
         const result = await response.json();
         // console.log('Prediction result:', result);
-        // You can set the result to the state or handle it any other way
-        // [{"label": "cardboard", "score": 0.8171940445899963}, 
-        // {"label": "paper", "score": 0.12719671428203583}, 
-        // {"label": "trash", "score": 0.024590767920017242}, 
-        // {"label": "plastic", "score": 0.012262715958058834}, 
-        // {"label": "metal", "score": 0.011666516773402691}]  
-        return getTopPrediction(result);
+        
+        // Set the prediction result to the state
+        setPrediction(getTopPrediction(result));
 
       } else {
         console.error('Failed to send photo to the Hugging Face Model');
@@ -93,87 +92,17 @@ export default function App() {
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
-        const options = { quality: 0.1, base64: false, skipProcessing: false };
+        const options = { quality: 0.4, base64: false, skipProcessing: false };
         const data = await cameraRef.current.takePictureAsync(options);
         setPhoto(data.uri);
         sendPhotoToServer(data.uri);
         
   
-        // Send the captured photo to your Flask server
-        
       } catch (error) {
         console.error('Error taking picture: ', error);
       }
     }
   };
-  
-  
-
-
-  const sendPhotoToServer = async (photoUri: string) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', {
-        uri: photoUri,
-        name: 'photo.jpg',
-        type: 'image/jpeg',
-      });
-      console.log('about to send response')
-
-      console.log("POST" + SERVERURL + '/predict')
-      // const response = await fetch(SERVERURL + '/predict', {
-      //   method: 'POST',
-      //   body: formData,
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-      const response = await fetch(SERVERURL, {
-        method: 'GET',
-        // body: formData,
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // },
-      });
-      console.log('sent response')
-  
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Prediction result:', result);
-        // Handle the prediction result as needed
-      } else {
-        console.error('Failed to send photo to the server');
-      }
-    } catch (error) {
-      console.error('Error sending photo to the server:', error);
-    }
-  };
-  
-
-  const cancelPicture = () => {
-    setPhoto(null);
-    if (cameraRef.current) {
-      cameraRef.current.resumePreview(); // This is important to make sure the camera starts capturing the preview again.
-    }
-  };
-
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      try {
-        const options = { quality: 0.1, base64: false, skipProcessing: false };
-        const data = await cameraRef.current.takePictureAsync(options);
-        setPhoto(data.uri);
-        sendPhotoToServer(data.uri);
-        
-  
-        // Send the captured photo to your Flask server
-        
-      } catch (error) {
-        console.error('Error taking picture: ', error);
-      }
-    }
-  };
-  
   
 
 
@@ -186,6 +115,15 @@ export default function App() {
             <TouchableOpacity style={styles.cancelButton} onPress={cancelPicture}>
               <Text style={styles.cancelButtonText}>✕</Text>
             </TouchableOpacity>
+
+            {/* Show prediction result when available */}
+            {prediction && (
+              <View style={styles.predictionContainer}>
+                <Text style={styles.predictionText}>
+                  {prediction.label} - {(prediction.score * 100).toFixed(2)}%
+                </Text>
+              </View>
+            )}
           </View>
         ) : (
           <View style={{ flex: 1 }}>
@@ -301,5 +239,19 @@ const styles = StyleSheet.create({
     fontSize: 25, // make it large
     color: 'white', // white cross mark
     fontWeight: 'bold', // bold cross mark
-  }
+  },
+  predictionContainer: {
+    position: 'absolute',
+    bottom: 20, // position from bottom
+    left: 20, // position from left
+    right: 20, // position from right
+    backgroundColor: 'rgba(0,0,0,0.7)', // semi-transparent background
+    padding: 10,
+    borderRadius: 5,
+  },
+  predictionText: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+  },
 });
