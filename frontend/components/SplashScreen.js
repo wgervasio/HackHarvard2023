@@ -1,11 +1,4 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { View, Text, Image, StyleSheet, Animated } from "react-native";
-import * as Font from "expo-font";
-
-const SplashScreen = () => {
-	const [fadeAnim] = useState(new Animated.Value(0));
-=======
 import { View, Text, Image, StyleSheet, Animated, Easing } from "react-native";
 import * as Font from "expo-font";
 import { GoogleButton } from "../components/GoogleButton";
@@ -14,7 +7,6 @@ const SplashScreen = ({ loginWithGoogle }) => {
 	const [fadeAnim] = useState(new Animated.Value(0));
 	const [positionAnim] = useState(new Animated.Value(0));
 	const [buttonFadeAnim] = useState(new Animated.Value(0));
->>>>>>> main
 	const [isFontLoaded, setIsFontLoaded] = useState(false);
 
 	useEffect(() => {
@@ -26,17 +18,6 @@ const SplashScreen = ({ loginWithGoogle }) => {
 		};
 		loadFont();
 
-<<<<<<< HEAD
-		Animated.timing(fadeAnim, {
-			toValue: 1,
-			duration: 2000, // You can adjust the duration for the desired fade-in speed
-			useNativeDriver: true,
-		}).start();
-	}, []);
-
-	if (!isFontLoaded) {
-		return null; // or a loading indicator
-=======
 		const positionAnimation = Animated.timing(positionAnim, {
 			toValue: -50,
 			duration: 500,
@@ -63,15 +44,11 @@ const SplashScreen = ({ loginWithGoogle }) => {
 
 	if (!isFontLoaded) {
 		return null;
->>>>>>> main
 	}
 
 	return (
 		<View style={styles.container}>
 			<Animated.View
-<<<<<<< HEAD
-				style={[styles.fadeContainer, { opacity: fadeAnim }]}
-=======
 				style={[
 					styles.fadeContainer,
 					{
@@ -79,16 +56,12 @@ const SplashScreen = ({ loginWithGoogle }) => {
 						transform: [{ translateY: positionAnim }],
 					},
 				]}
->>>>>>> main
 			>
 				<Image
 					source={require("../../frontend/assets/app_icon.png")}
 					style={styles.image}
 					resizeMode="contain"
 				/>
-<<<<<<< HEAD
-				<Text style={styles.text}>App Name</Text>
-=======
 				<Text style={styles.text}>QuickSort</Text>
 			</Animated.View>
 			<Animated.View style={{ opacity: buttonFadeAnim }}>
@@ -96,7 +69,6 @@ const SplashScreen = ({ loginWithGoogle }) => {
 					text="Login with Google"
 					onPress={loginWithGoogle}
 				/>
->>>>>>> main
 			</Animated.View>
 		</View>
 	);
@@ -122,8 +94,6 @@ const styles = StyleSheet.create({
 		fontFamily: "Montserrat",
 		fontWeight: "bold",
 	},
-<<<<<<< HEAD
-=======
 	button: {
 		marginTop: 20,
 		padding: 10,
@@ -131,7 +101,6 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontSize: 20,
 	},
->>>>>>> main
 });
 
 export default SplashScreen;

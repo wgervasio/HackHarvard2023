@@ -20,9 +20,6 @@ export default function App() {
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#BBD9B4" }}>
-<<<<<<< HEAD
-			{isLoaded ? <Navbar /> : <SplashScreen />}
-=======
 			{isLoaded ? (
 				isLoggedIn ? (
 					<Navbar />
@@ -32,7 +29,6 @@ export default function App() {
 			) : (
 				<SplashScreen />
 			)}
->>>>>>> main
 			<StatusBar style="auto" />
 		</View>
 	);
