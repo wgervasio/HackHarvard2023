@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Animated } from "react-native";
+import * as Font from "expo-font";
 
 const SplashScreen = () => {
 	const [fadeAnim] = useState(new Animated.Value(0));
+	const [isFontLoaded, setIsFontLoaded] = useState(false);
 
 	useEffect(() => {
+		const loadFont = async () => {
+			await Font.loadAsync({
+				Montserrat: require("../assets/Montserrat-Bold.ttf"),
+			});
+			setIsFontLoaded(true);
+		};
+		loadFont();
+
 		Animated.timing(fadeAnim, {
 			toValue: 1,
 			duration: 2000, // You can adjust the duration for the desired fade-in speed
 			useNativeDriver: true,
 		}).start();
 	}, []);
+
+	if (!isFontLoaded) {
+		return null; // or a loading indicator
+	}
 
 	return (
 		<View style={styles.container}>
