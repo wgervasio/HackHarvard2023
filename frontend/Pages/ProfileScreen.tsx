@@ -102,7 +102,6 @@ const data = [
       }}
       width={(Dimensions.get("window").width)*0.95} // from react-native
       height={(Dimensions.get("window").height)*0.4}
-
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={{
         backgroundColor: "#e26a00",
