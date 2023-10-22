@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "strictPropertyInitialization": false,
+      "target": "es2016",
+      "types": ["node"],
+      "lib": [
+        "ES6"
+      ],
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true
+    }
+  }
