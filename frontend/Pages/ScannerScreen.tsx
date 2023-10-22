@@ -6,7 +6,7 @@ import fetch from 'node-fetch'; // Import the 'node-fetch' library for making HT
 
 
 // const SERVERURL = 'http://192.168.0.100:5000'
-const SERVERURL = '172.28.224.1:5000'
+const SERVERURL = 'http://10.253.17.124:5000'
 
 export default function App() {
   const cameraRef = useRef<Camera | null>(null);
@@ -43,12 +43,21 @@ export default function App() {
         type: 'image/jpeg',
       });
       console.log('about to send response')
-      const response = await fetch(SERVERURL + '/predictyolo', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+
+      console.log("POST" + SERVERURL + '/predict')
+      // const response = await fetch(SERVERURL + '/predict', {
+      //   method: 'POST',
+      //   body: formData,
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
+      const response = await fetch(SERVERURL, {
+        method: 'GET',
+        // body: formData,
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // },
       });
       console.log('sent response')
   

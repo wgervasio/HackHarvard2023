@@ -5,9 +5,11 @@ import pytest
 from PIL import Image
 import io
 
+
+SERVER_HOST = '10.253.17.124'
 # Function to perform a prediction given an image
 def make_prediction(image_path):
-    URL = 'http://localhost:5000/predict'
+    URL = f'http://{SERVER_HOST}:5000/predictyolo'
 
     # Resize the image
     with Image.open(image_path) as img:
@@ -35,6 +37,7 @@ def test_predict():
 
     # Send the request and receive the response
     response = make_prediction(image_path)
+    print (response.text)
 
     # Assert the status code
     assert response.status_code == 200

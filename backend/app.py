@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import onnxruntime as ort
 import numpy as np
 from PIL import Image
 import torchvision.transforms as transforms
@@ -10,9 +9,7 @@ import torch
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app)
-# exp://a1sbvnm.anonymous.8081.exp.direct
-cors = CORS(app, resources={r"/api/*": {"origins": "https://exp://a1sbvnm.anonymous.8081.exp.direct"}})
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 # Set up logging to file
@@ -21,39 +18,16 @@ logging.basicConfig(level=logging.INFO,
                     filename='app.log',  # Name of the log file
                     filemode='a')  # Append mode so log file isn't overwritten at each run
 
-ONNX_PATH = 'garbage_classification_model.onnx'
-CLASSES = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-CLASSES_YOLO = ['biodegradable', 'cardboard', 'glass', 'metal', 'paper', 'plastic']
 
-def predict_onnx(image):
-    ort_session = ort.InferenceSession(ONNX_PATH)
-
-    transform = transforms.Compose([
-        transforms.Resize((256, 256)),
-        transforms.ToTensor(),
-    ])
-
-    # Image is processed in-memory
-    image = transform(image).unsqueeze(0).numpy()
-
-    ort_inputs = {ort_session.get_inputs()[0].name: image}
-    ort_outs = ort_session.run(None, ort_inputs)
-    predictions = ort_outs[0]
-    predicted_class_index = np.argmax(predictions, axis=1)  # This gives the index of the class with highest probability
-    predicted_class = CLASSES[predicted_class_index[0]]  # Get the class name using the index
-
-    # Now, get the confidence score of the predicted class
-    confidence_score = predictions[0, predicted_class_index[0]]
-
-    return predicted_class, float(confidence_score)
+CLASSES = ['biodegradable', 'cardboard', 'glass', 'metal', 'paper', 'plastic']
 
 
 model = torch.load('yolo_model.pth')
 
 
-@app.route('/predictyolo', methods=['POST'])
-def predict_yolo():
-    print ('entering predict_yolo')
+@app.route('/predict', methods=['POST'])
+def predict():
+    print ('entering predict')
     # perform inference
     start_time = time.time()
     if 'file' not in request.files:
@@ -84,7 +58,7 @@ def predict_yolo():
             res= jsonify({
                 'boxes':[float(b) for b in boxes],
                 'confidence':confidence,
-                'class': CLASSES_YOLO[int(categories[0])]
+                'class': CLASSES[int(categories[0])]
             })
     else:
         res= jsonify({'error': 'Something went wrong'}), 400
@@ -93,42 +67,10 @@ def predict_yolo():
     logging.info(f"Prediction successful. Duration: {duration:.2f} seconds")
     return res
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Log the start time of prediction
-    start_time = time.time()
-
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part in the request'}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    if file:
-        # Read the file from the request and prepare it for prediction
-        image = Image.open(io.BytesIO(file.read())).convert('RGB')  # Convert image to RGB (3 channels)
-        prediction, prediction_conf = predict_onnx(image)
-
-        # Log the end time of prediction and calculate the duration
-        end_time = time.time()
-        duration = end_time - start_time
-        logging.info(f"Prediction successful. Duration: {duration:.2f} seconds")  # Log the duration
-
-        return jsonify({'class': prediction,
-                        'confidence': prediction_conf
-                        })
-
-    # In case of failure, log the error and the time taken
-    end_time = time.time()
-    duration = end_time - start_time
-    logging.error(f"Prediction failed. Duration: {duration:.2f} seconds")  # Log the duration
-
-    return jsonify({'error': 'Something went wrong'}), 400
 
 @app.route('/')
 def main():
     return "The server is running. Use the '/predict' endpoint to upload an image for classification."
 
 if __name__ == '__main__':
-    app.run(debug=True, host='172.28.224.1', port=5000)  # This will run the server publicly on port 5000
+    app.run(debug=True, port=5000)  # This will run the server publicly on port 5000
