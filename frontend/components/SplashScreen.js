@@ -17,13 +17,13 @@ const SplashScreen = () => {
 
 		Animated.timing(fadeAnim, {
 			toValue: 1,
-			duration: 2000, // You can adjust the duration for the desired fade-in speed
+			duration: 2000,
 			useNativeDriver: true,
 		}).start();
 	}, []);
 
 	if (!isFontLoaded) {
-		return null; // or a loading indicator
+		return null;
 	}
 
 	return (
@@ -36,7 +36,7 @@ const SplashScreen = () => {
 					style={styles.image}
 					resizeMode="contain"
 				/>
-				<Text style={styles.text}>App Name</Text>
+				<Text style={styles.text}>QuickSort</Text>
 			</Animated.View>
 		</View>
 	);
