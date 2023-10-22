@@ -7,7 +7,13 @@ import io
 import logging
 import time  # Import the time module to calculate prediction time
 import torch
+from flask_cors import CORS
+
 app = Flask(__name__)
+cors = CORS(app)
+# exp://a1sbvnm.anonymous.8081.exp.direct
+cors = CORS(app, resources={r"/api/*": {"origins": "https://exp://a1sbvnm.anonymous.8081.exp.direct"}})
+
 
 # Set up logging to file
 logging.basicConfig(level=logging.INFO,
@@ -47,6 +53,7 @@ model = torch.load('yolo_model.pth')
 
 @app.route('/predictyolo', methods=['POST'])
 def predict_yolo():
+    print ('entering predict_yolo')
     # perform inference
     start_time = time.time()
     if 'file' not in request.files:
@@ -124,4 +131,4 @@ def main():
     return "The server is running. Use the '/predict' endpoint to upload an image for classification."
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)  # This will run the server publicly on port 5000
+    app.run(debug=True, host='172.28.224.1', port=5000)  # This will run the server publicly on port 5000
