@@ -1,69 +1,8 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity, ScrollView} from 'react-native';
+import { LineChart, PieChart } from "react-native-chart-kit";
+import axios from 'axios';
 
-
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Dimensions, Button, SafeAreaView, TouchableOpacity, ScrollView} from 'react-native';
-
-import { useState } from 'react';
-
-
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
-
-
-const data = [
-    {
-      name: "Biodegradable",
-      population: 21500000,
-      color: "#32cd32",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    },
-    {
-      name: "Cardboard",
-      population: 2800000,
-      color: "#fff8dc",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    },
-    {
-      name: "Glass",
-      population: 527612,
-      color: "#000080",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    },
-    {
-      name: "Mental",
-      population: 8538000,
-      color: "#d8bfd8",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    },
-    {
-      name: "Paper",
-      population: 11920000,
-      color: "#f5fffa",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    },
-
-    {
-      name: "Plastic",
-      population: 1190000,
-      color: "#f4a460",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12
-    }
-  ];
-  
-  
   const LineChartYear = () => {
     const stylesTextBelow = StyleSheet.create({
       container: {
@@ -100,14 +39,14 @@ const data = [
           }
         ]
       }}
-      width={(Dimensions.get("window").width)*0.95} // from react-native
+      width={(Dimensions.get("window").width)*0.95}
       height={(Dimensions.get("window").height)*0.4}
-      yAxisInterval={1} // optional, defaults to 1
+      yAxisInterval={1}
       chartConfig={{
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#a9a9a9",
         backgroundGradientTo: "#556b2f",
-        decimalPlaces: 2, // optional, defaults to 2dp
+        decimalPlaces: 2,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         style: {
@@ -131,7 +70,7 @@ const data = [
       }}
 
     />
-    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Year</Text>
+    <Text style={stylesTextBelow.textBelowChart}>Total  Items  Recycled Past Year</Text>
     </View>
     )
   }
@@ -146,7 +85,7 @@ const data = [
         position: 'absolute',
         top: (Dimensions.get("window").height)*0.38,
         fontSize: 17,
-        color: '#ffff', // Adjust the margin as needed
+        color: '#ffff',
       },
     });
     return (
@@ -168,16 +107,16 @@ const data = [
           }
         ]
       }}
-      width={(Dimensions.get("window").width)*0.95} // from react-native
+      width={(Dimensions.get("window").width)*0.95}
       height={(Dimensions.get("window").height)*0.4}
       yAxisLabel="$"
       yAxisSuffix="k"
-      yAxisInterval={1} // optional, defaults to 1
+      yAxisInterval={1}
       chartConfig={{
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#a9a9a9",
         backgroundGradientTo: "#556b2f",
-        decimalPlaces: 2, // optional, defaults to 2dp
+        decimalPlaces: 2,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         style: {
@@ -200,7 +139,7 @@ const data = [
       }}
     />
 
-    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Week</Text>
+    <Text style={stylesTextBelow.textBelowChart}>Total  Items  Recycled Past Week</Text>
     </View>
     )
   }
@@ -214,7 +153,7 @@ const data = [
         position: 'absolute',
         top: (Dimensions.get("window").height)*0.38,
         fontSize: 17,
-        color: '#ffff', // Adjust the margin as needed
+        color: '#ffff',
       },
     });
     return (
@@ -233,14 +172,14 @@ const data = [
           }
         ]
       }}
-      width={(Dimensions.get("window").width)*0.95} // from react-native
+      width={(Dimensions.get("window").width)*0.95}
       height={(Dimensions.get("window").height)*0.4}
-      yAxisInterval={1} // optional, defaults to 1
+      yAxisInterval={1}
       chartConfig={{
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#a9a9a9",
         backgroundGradientTo: "#556b2f",
-        decimalPlaces: 2, // optional, defaults to 2dp
+        decimalPlaces: 2,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         style: {
@@ -264,7 +203,7 @@ const data = [
       
     />
 
-    <Text style={stylesTextBelow.textBelowChart}>                 Total  Items  Recycled Past Month</Text>
+    <Text style={stylesTextBelow.textBelowChart}>Total  Items  Recycled Past Month</Text>
     </View>
     );
   };
@@ -344,8 +283,25 @@ const data = [
 
 export default function ProfileScreen({ navigation }: any) {
     const [activeChart, setActiveChart] = useState(1);
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+      axios.get('http://67.134.204.3/api/v1/data')
+        .then((response) => {
+          const dataFromApi = response.data;
+          const transformedData = dataFromApi.map((item: any) => ({
+            name: 'trash',
+            population: item.trash,
+          }));
+          setChartData(transformedData);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }, []);
+
   const ButtonChoices = () => {
-    const toggleChart = (chartNumber) => {
+    const toggleChart = (chartNumber: number) => {
       setActiveChart(chartNumber);
     };
     const styles = StyleSheet.create({
@@ -394,8 +350,6 @@ export default function ProfileScreen({ navigation }: any) {
       >
         <Text style={styles.buttonText}>Last Week</Text>
       </TouchableOpacity>
-        
-        
         </SafeAreaView>
     )
   }
@@ -408,20 +362,13 @@ export default function ProfileScreen({ navigation }: any) {
       {activeChart == 2 && <LineChartMonth/>}
       {activeChart == 3 && <LineChartWeek/>} 
       <ButtonChoices></ButtonChoices>
-      
-      
-
-  
 
 <PieChart
-  data={data}
+  data={chartData}
   width={(Dimensions.get("window").width)*0.95}
-
-
-
   height={(Dimensions.get("window").height)*0.25}
   chartConfig={{
-    decimalPlaces: 2, // optional, defaults to 2dp
+    decimalPlaces: 2,
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   }}
@@ -451,5 +398,4 @@ const styles = StyleSheet.create({
       paddingHorizontal: 10,
       borderRadius: 16
     }, 
-    
   });
