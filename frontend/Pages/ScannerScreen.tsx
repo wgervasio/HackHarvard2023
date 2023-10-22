@@ -34,7 +34,7 @@ export default function App() {
     return <Text>Permission for the camera not granted. Please change this in settings.</Text>;
   }
   const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classification";
-  const BEARER_TOKEN = "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"; // Replace with your actual Hugging Face Bearer token
+  const BEARER_TOKEN = "Token"; // Replace with your actual Hugging Face Bearer token
   
   function getTopPrediction(predictions:any) {
     // Sort the predictions from highest to lowest based on the score.
